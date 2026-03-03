@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { prisma } from '@/lib/prisma';
 import { DiaryForm } from '@/components/diary/DiaryForm';
 import { DiaryFormData } from '@/lib/types';
