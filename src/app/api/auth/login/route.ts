@@ -1,31 +1,26 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { supabase } from '@/lib/supabase';
 import { verifyPassword } from '@/lib/auth';
 import { createSession, setSessionCookie } from '@/lib/session';
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const { password } = await request.json();
-
-    if (!password) {
-      return NextResponse.json({ error: '비밀번호를 입력해주세요.' }, { status: 400 });
-    }
-
-    const settings = await prisma.appSettings.findFirst();
+    const { password } = await req.json();
+    const { data: settings } = await supabase.from('AppSettings').select('passwordHash').eq('id', 1).maybeSingle();
     if (!settings) {
       return NextResponse.json({ error: '비밀번호가 설정되지 않았습니다.' }, { status: 400 });
     }
 
-    const isValid = await verifyPassword(password, settings.passwordHash);
-    if (!isValid) {
-      return NextResponse.json({ error: '비밀번호가 일치하지 않습니다.' }, { status: 401 });
+    const valid = await verifyPassword(password, settings.passwordHash);
+    if (!valid) {
+      return NextResponse.json({ error: '비밀번호가 틀렸습니다.' }, { status: 401 });
     }
 
     const token = await createSession();
+    const response = NextResponse.json({ success: true });
     await setSessionCookie(token);
-
-    return NextResponse.json({ success: true });
-  } catch {
-    return NextResponse.json({ error: '로그인 중 오류가 발생했습니다.' }, { status: 500 });
+    return response;
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 500 });
   }
 }

@@ -1,31 +1,33 @@
 export const dynamic = 'force-dynamic';
 
-import { prisma } from '@/lib/prisma';
+import { supabase } from '@/lib/supabase';
 import { DiaryForm } from '@/components/diary/DiaryForm';
 import { DiaryFormData } from '@/lib/types';
 
 export default async function DiaryDatePage({ params }: { params: Promise<{ date: string }> }) {
   const { date } = await params;
 
-  const entry = await prisma.diaryEntry.findUnique({
-    where: { date },
-    include: { exercises: true, meals: true, quote: true },
-  });
+  const { data: entry } = await supabase
+    .from('DiaryEntry')
+    .select('*, exercises:Exercise(*), meals:Meal(*), quote:Quote(*)')
+    .eq('date', date)
+    .single();
 
-  // Get random quote for stamp
-  const quoteCount = await prisma.quote.count();
-  const randomQuote = quoteCount > 0
-    ? await prisma.quote.findFirst({ skip: Math.floor(Math.random() * quoteCount) })
-    : null;
+  const { count } = await supabase.from('Quote').select('*', { count: 'exact', head: true });
+  let randomQuote = null;
+  if (count && count > 0) {
+    const { data } = await supabase.from('Quote').select('*').limit(1).range(
+      Math.floor(Math.random() * count), Math.floor(Math.random() * count)
+    );
+    randomQuote = data?.[0] ?? null;
+  }
 
   let initialData: DiaryFormData | undefined;
-
   if (entry) {
     let customFields: { label: string; value: string }[] = [];
     if (entry.customFields) {
       try { customFields = JSON.parse(entry.customFields); } catch { /* ignore */ }
     }
-
     initialData = {
       happenings: entry.happenings ?? '',
       gratitude: entry.gratitude ?? '',
@@ -37,16 +39,11 @@ export default async function DiaryDatePage({ params }: { params: Promise<{ date
       soulNote: entry.soulNote ?? '',
       games: entry.games ?? '',
       shopping: entry.shopping ?? '',
-      exercises: entry.exercises.map(e => ({
-        id: e.id,
-        type: e.type,
-        duration: e.duration,
-        note: e.note,
+      exercises: (entry.exercises ?? []).map((e: { id: string; type: string; duration: number | null; note: string | null }) => ({
+        id: e.id, type: e.type, duration: e.duration, note: e.note,
       })),
-      meals: entry.meals.map(m => ({
-        id: m.id,
-        mealType: m.mealType as 'breakfast' | 'lunch' | 'dinner' | 'snack',
-        content: m.content,
+      meals: (entry.meals ?? []).map((m: { id: string; mealType: string; content: string }) => ({
+        id: m.id, mealType: m.mealType as 'breakfast' | 'lunch' | 'dinner' | 'snack', content: m.content,
       })),
       customFields,
     };

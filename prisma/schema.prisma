@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model AppSettings {
@@ -16,37 +17,28 @@ model AppSettings {
 
 model DiaryEntry {
   id        String   @id @default(cuid())
-  date      String   @unique // YYYY-MM-DD format, one entry per day
+  date      String   @unique
 
-  // Core sections
-  happenings String? // Free text for daily events
-  gratitude  String? // Things to be grateful for
+  happenings String?
+  gratitude  String?
 
-  // Sleep tracking
-  sleepBedTime  String? // HH:mm format
-  sleepWakeTime String? // HH:mm format
+  sleepBedTime  String?
+  sleepWakeTime String?
 
-  // Body & Soul (1-5 scale)
-  bodyStatus Int?    // 1=very bad, 5=excellent
-  bodyNote   String? // Optional note about physical state
-  soulStatus Int?    // 1=very bad, 5=excellent
-  soulNote   String? // Optional note about mental state
+  bodyStatus Int?
+  bodyNote   String?
+  soulStatus Int?
+  soulNote   String?
 
-  // Games & Shopping
-  games    String? // Free text
-  shopping String? // Free text
+  games    String?
+  shopping String?
 
-  // Custom fields as JSON
-  customFields String? // JSON: [{ label: string, value: string }]
+  customFields  String?
+  searchContent String?
 
-  // Search optimization
-  searchContent String? // Auto-generated concatenation of all text
-
-  // Quote stamp for this day
   quoteId String?
   quote   Quote?  @relation(fields: [quoteId], references: [id], onDelete: SetNull)
 
-  // Relations
   exercises Exercise[]
   meals     Meal[]
 
