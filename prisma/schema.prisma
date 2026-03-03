@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AppSettings {
+  id           Int      @id @default(1)
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model DiaryEntry {
+  id        String   @id @default(cuid())
+  date      String   @unique // YYYY-MM-DD format, one entry per day
+
+  // Core sections
+  happenings String? // Free text for daily events
+  gratitude  String? // Things to be grateful for
+
+  // Sleep tracking
+  sleepBedTime  String? // HH:mm format
+  sleepWakeTime String? // HH:mm format
+
+  // Body & Soul (1-5 scale)
+  bodyStatus Int?    // 1=very bad, 5=excellent
+  bodyNote   String? // Optional note about physical state
+  soulStatus Int?    // 1=very bad, 5=excellent
+  soulNote   String? // Optional note about mental state
+
+  // Games & Shopping
+  games    String? // Free text
+  shopping String? // Free text
+
+  // Custom fields as JSON
+  customFields String? // JSON: [{ label: string, value: string }]
+
+  // Search optimization
+  searchContent String? // Auto-generated concatenation of all text
+
+  // Quote stamp for this day
+  quoteId String?
+  quote   Quote?  @relation(fields: [quoteId], references: [id], onDelete: SetNull)
+
+  // Relations
+  exercises Exercise[]
+  meals     Meal[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Exercise {
+  id        String     @id @default(cuid())
+  diaryId   String
+  diary     DiaryEntry @relation(fields: [diaryId], references: [id], onDelete: Cascade)
+  type      String
+  duration  Int?
+  note      String?
+  createdAt DateTime   @default(now())
+}
+
+model Meal {
+  id        String     @id @default(cuid())
+  diaryId   String
+  diary     DiaryEntry @relation(fields: [diaryId], references: [id], onDelete: Cascade)
+  mealType  String
+  content   String
+  createdAt DateTime   @default(now())
+}
+
+model Quote {
+  id         String       @id @default(cuid())
+  text       String
+  author     String?
+  source     String?
+  isFavorite Boolean      @default(false)
+  diaries    DiaryEntry[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}

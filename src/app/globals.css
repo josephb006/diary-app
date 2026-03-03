@@ -1,0 +1,259 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #faf8f5;
+  --bg-secondary: #f5f0e8;
+  --bg-card: #ffffff;
+  --bg-hover: #f0ebe3;
+  --bg-input: #fdfcfa;
+  --text-primary: #2c2520;
+  --text-secondary: #6b5c4d;
+  --text-muted: #a89888;
+  --border: #e8ddd0;
+  --border-focus: #c4956a;
+  --accent: #c4956a;
+  --accent-hover: #b07d52;
+  --accent-light: #f5e6d3;
+  --success: #7dab6e;
+  --danger: #c97070;
+  --danger-light: #fde8e8;
+  --stamp: #8b4513;
+  --rating-fill: #e8b84b;
+  --shadow: 0 2px 8px rgba(44, 37, 32, 0.12), 0 1px 3px rgba(44, 37, 32, 0.08);
+  --shadow-md: 0 6px 20px rgba(44, 37, 32, 0.15), 0 2px 6px rgba(44, 37, 32, 0.1);
+  --shadow-lg: 0 12px 36px rgba(44, 37, 32, 0.18), 0 4px 12px rgba(44, 37, 32, 0.1);
+
+  /* Section accent colors */
+  --section-happenings: #6366f1;
+  --section-happenings-light: rgba(99, 102, 241, 0.06);
+  --section-gratitude: #e11d73;
+  --section-gratitude-light: rgba(225, 29, 115, 0.05);
+  --section-sleep: #3b5998;
+  --section-sleep-light: rgba(59, 89, 152, 0.05);
+  --section-exercise: #16a34a;
+  --section-exercise-light: rgba(22, 163, 74, 0.05);
+  --section-meals: #ea7e30;
+  --section-meals-light: rgba(234, 126, 48, 0.05);
+  --section-body: #0d9488;
+  --section-body-light: rgba(13, 148, 136, 0.05);
+  --section-soul: #8b5cf6;
+  --section-soul-light: rgba(139, 92, 246, 0.05);
+  --section-games: #06b6d4;
+  --section-games-light: rgba(6, 182, 212, 0.05);
+  --section-shopping: #f06070;
+  --section-shopping-light: rgba(240, 96, 112, 0.05);
+  --section-custom: #a8875a;
+  --section-custom-light: rgba(168, 135, 90, 0.05);
+}
+
+.dark {
+  --bg-primary: #1a1612;
+  --bg-secondary: #231f1b;
+  --bg-card: #2a2420;
+  --bg-hover: #3a3430;
+  --bg-input: #2a2420;
+  --text-primary: #e8ddd0;
+  --text-secondary: #a89888;
+  --text-muted: #6b5c4d;
+  --border: #3a3430;
+  --border-focus: #d4a574;
+  --accent: #d4a574;
+  --accent-hover: #c4956a;
+  --accent-light: #3a2f25;
+  --success: #8dbb7e;
+  --danger: #d98080;
+  --danger-light: #3a2525;
+  --stamp: #d4a574;
+  --rating-fill: #e8b84b;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.35);
+
+  /* Section accent colors (slightly brighter for dark mode) */
+  --section-happenings: #818cf8;
+  --section-happenings-light: rgba(129, 140, 248, 0.08);
+  --section-gratitude: #f472b6;
+  --section-gratitude-light: rgba(244, 114, 182, 0.07);
+  --section-sleep: #6d8ec7;
+  --section-sleep-light: rgba(109, 142, 199, 0.07);
+  --section-exercise: #4ade80;
+  --section-exercise-light: rgba(74, 222, 128, 0.07);
+  --section-meals: #fb923c;
+  --section-meals-light: rgba(251, 146, 60, 0.07);
+  --section-body: #2dd4bf;
+  --section-body-light: rgba(45, 212, 191, 0.07);
+  --section-soul: #a78bfa;
+  --section-soul-light: rgba(167, 139, 250, 0.07);
+  --section-games: #22d3ee;
+  --section-games-light: rgba(34, 211, 238, 0.07);
+  --section-shopping: #fb7185;
+  --section-shopping-light: rgba(251, 113, 133, 0.07);
+  --section-custom: #c4a46e;
+  --section-custom-light: rgba(196, 164, 110, 0.07);
+}
+
+@theme inline {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-card: var(--bg-card);
+  --color-bg-hover: var(--bg-hover);
+  --color-bg-input: var(--bg-input);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-border-focus: var(--border-focus);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent-light);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-danger-light: var(--danger-light);
+  --color-stamp: var(--stamp);
+  --color-rating-fill: var(--rating-fill);
+  --color-section-happenings: var(--section-happenings);
+  --color-section-happenings-light: var(--section-happenings-light);
+  --color-section-gratitude: var(--section-gratitude);
+  --color-section-gratitude-light: var(--section-gratitude-light);
+  --color-section-sleep: var(--section-sleep);
+  --color-section-sleep-light: var(--section-sleep-light);
+  --color-section-exercise: var(--section-exercise);
+  --color-section-exercise-light: var(--section-exercise-light);
+  --color-section-meals: var(--section-meals);
+  --color-section-meals-light: var(--section-meals-light);
+  --color-section-body: var(--section-body);
+  --color-section-body-light: var(--section-body-light);
+  --color-section-soul: var(--section-soul);
+  --color-section-soul-light: var(--section-soul-light);
+  --color-section-games: var(--section-games);
+  --color-section-games-light: var(--section-games-light);
+  --color-section-shopping: var(--section-shopping);
+  --color-section-shopping-light: var(--section-shopping-light);
+  --color-section-custom: var(--section-custom);
+  --color-section-custom-light: var(--section-custom-light);
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Animation utility classes */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease both;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease both;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Section card base styles */
+.section-card {
+  background: var(--bg-card);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background pattern for body */
+body {
+  background-color: var(--bg-primary);
+  background-image:
+    radial-gradient(circle, var(--border) 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+  background-attachment: fixed;
+  color: var(--text-primary);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+  border: 1px solid var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Input focus ring */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--border-focus) !important;
+  box-shadow: 0 0 0 3px var(--accent-light), 0 1px 3px rgba(44, 37, 32, 0.08) !important;
+}
+
+/* Textarea styling */
+textarea {
+  line-height: 1.7;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color, box-shadow, transform, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
+}
+
+/* Disable transition on animation targets to avoid conflict */
+.animate-fade-in,
+.animate-slide-up,
+.animate-fade-in-up {
+  transition: none;
+}
